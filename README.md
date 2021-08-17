@@ -7,6 +7,10 @@ If it's >=$10k, it prints it and saves it in a logs.txt file.
 
 ![](https://i.imgur.com/Pt0LK0V.gif)
 
+(updated version)
+
+![](https://i.imgur.com/M7aKmHL.gif)
+
 ## How to use:
 
 ### **Python**:
