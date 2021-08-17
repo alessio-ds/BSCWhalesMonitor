@@ -20,22 +20,27 @@ def bc():
     blockurl='https://bscscan.com/'
     b=requests.get(blockurl)
     b=b.text
-    pb=b.find('Block</span> <a href=')
-    pb+=21
-    pb=b.find('/block/')
-    pb+=7
-    pe=b[pb:].find("'")
-    b=b[pb:pb+pe]
+    ppb=b.find('Block</span> <a href=')
+    ppb+=21
+    ppb=b.find('/block/')
+    ppb+=7
+    pe=b[ppb:].find("'")
+    b=b[ppb:ppb+pe]
     try:
         d=int(b)
         #print('Current block: ',b)
         return(b)
     except:
-        pass
+        print("COULDN'T FIND THE CURRENT BLOCK!")
+        quit()
 
 #s is the number to subtract to the actual block.
 s=50
 token=input('Which token would you like to scan? \nFor example, $CAKE is: 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82\n')
+while len(token)!=42: # 42 is the lenght of every token address
+    token=input('Wrong token. Try again: ')
+b=bc()
+pb=str(int(b)-s)
 while True:
     try:
         b=bc()
@@ -46,29 +51,33 @@ while True:
         # so, 200tx checks = 50 new blocks, 200/4=50
         # 16 txs = 1 block,
 
-        print('Blocks to check:',s)
-        print('Checking block',str(int(b)-s),'to',b,'(current block)')
+        cb=b #current block
+
+        print('\nBlocks to check:',str(int(cb)-int(pb)))
+        print('Checking block',pb,'to',cb,'(current block)\n') #100 - 150
 
 
-        b=str(int(b)-s)
         r=0
         # CHECKS TOKEN TXs FROM THE CURRENT BLOCK
-        apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+b+'&endblock=99999999&sort=asc&apikey='+api
+        apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
         l=(requests.get(apiurl)).text
 
         t=l.count('hash')
 
+        if t<16:
+            print('Waiting for at least 16 transactions.')
         while t<16:
+            cb=bc()
+            apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
             l=(requests.get(apiurl)).text
             t=l.count('hash')
+            print(f"Checking block {pb} to {cb} ({str(int(cb)-int(pb))}) - Txs to check: {t}", end="\r")
+            '''
+            print(f"Blocks to check: {str(int(cb)-int(pb))}", end="\r")
+            print(f"Checking block {pb} to {cb}", end="\r")
             print(f"Waiting for at least 16 transactions. Txs to check: {t}", end="\r")
-
+            '''
             sleep(3)
-
-        s=t/4 # since 200tx checks = 50 new blocks, by doing the number of the txs / 4, we get how many blocks were mined since we started checking.
-        s=round(s)
-        if s==0:
-            s+=1
 
         # REPEATS ITSELF
         print('\n')
@@ -105,6 +114,7 @@ while True:
                     print(testo,'\n')
             except:
                 pass
+        pb=cb #previous block
     except:
         # Since the response will always be <200>, I didn't want to implement a smart feature to detect when you get blocked.
         print("You got momentarily blocked by bscscan.com, will try again in 15 seconds")
