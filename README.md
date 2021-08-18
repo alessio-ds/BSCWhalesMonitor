@@ -5,7 +5,7 @@ Fully automated and tested, will (probably) never stop checking new transactions
 
 If it's >=$10k, it prints it and saves it in a logs.txt file. Or you can simply edit the line n°109 and choose by yourself:
 
-`if dolla>=10000:`
+`if dolla>=100000:`
 
 ![](https://i.imgur.com/Pt0LK0V.gif)
 
