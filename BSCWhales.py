@@ -106,7 +106,7 @@ while True:
                     dolla=float(dolla.replace(',',''))
                 else:
                     dolla=float(dolla)
-                if dolla>=10000:
+                if dolla>=100000:
                     ds=h+'\n'+testo+'\n'
                     with open('logs.txt', mode='a') as f:
                         f.write(ds)
