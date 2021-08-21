@@ -1,23 +1,19 @@
 import requests
 from time import sleep
-import telegram
 
-bot=telegram.Bot(token='1952741322:AAFrpD_vTN8dUKaH8w8luGfX1iKs_qHrWiE')
-
-'''
 try:
-    with open('api.txt', mode='r') as a:
+    with open('apikey.txt', mode='r') as a:
         a=a.read()
         if len(a)==34:
             api=a
         else:
-            print('Your api key is wrong. Delete the api.txt file and try again.')
+            print('Your api key is wrong. Try again.')
+            quit()
 except:
-    with open('api.txt', mode='w') as a:
-        api=input('Input your bscscan.com API key:')
+    with open('apikey.txt', mode='w') as a:
+        api=input('Input your bscscan.com API key: ')
         a.write(api)
-'''
-api='IB36KSNURJBSDVWWFPUS619ZPDYUNFVDBZ'
+
 
 def bc():
     # CURRENT BLOCK CHECK
@@ -38,13 +34,13 @@ def bc():
         print("COULDN'T FIND THE CURRENT BLOCK!")
         quit()
 
-
 #s is the number to subtract to the actual block.
 s=50
-
+token=input('Which token would you like to scan? \nFor example, $CAKE is: 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82\n')
+while len(token)!=42: # 42 is the lenght of every token address
+    token=input('Wrong token. Try again: ')
 b=bc()
 pb=str(int(b)-s)
-token='0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
 while True:
     try:
         b=bc()
@@ -60,7 +56,7 @@ while True:
         print('\nBlocks to check:',str(int(cb)-int(pb)))
         print('Checking block',pb,'to',cb,'(current block)\n') #100 - 150
 
-        while cb<pb:
+		while cb<pb:
 		          cb+=1
         r=0
         # CHECKS TOKEN TXs FROM THE CURRENT BLOCK
@@ -111,34 +107,12 @@ while True:
                     dolla=float(dolla.replace(',',''))
                 else:
                     dolla=float(dolla)
-                if dolla>=100000:
-                    hw=r.text
-                    pos=hw.find("From</b> </span><span class='hash-tag text-truncate  mr-1'><a href='/token/")
-                    hw=hw[pos:]
-                    pos2=hw.find('Binance')
-                    pos3=hw.find('To')
-                    if pos2<pos3:
-                        # BUY
-                        e=''
-                        for _ in range(round(dolla/100000)):
-                            e+='🟢'
-                        hw=e+'\nBOUGHT '
-                    else:
-                        # SELL
-                        e=''
-                        for _ in range(round(dolla/100000)):
-                            e+='🔴'
-                        hw=e+'\nSOLD '
-
+                if dolla>=10000:
                     ds=h+'\n'+testo+'\n'
-                    dstg='https://bscscan.com/tx/'+h+'\n'+hw+'CAKES '+testo
                     with open('logs.txt', mode='a') as f:
                         f.write(ds)
                     print('\n',h)
                     print(testo,'\n')
-                    status=bot.send_message(chat_id='@cakewhales', text=dstg, parse_mode=telegram.ParseMode.HTML)
-
-
             except:
                 pass
         pb=cb #previous block
