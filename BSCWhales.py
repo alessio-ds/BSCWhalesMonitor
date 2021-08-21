@@ -56,7 +56,8 @@ while True:
         print('\nBlocks to check:',str(int(cb)-int(pb)))
         print('Checking block',pb,'to',cb,'(current block)\n') #100 - 150
 
-
+		while cb<pb:
+			cb+=1
         r=0
         # CHECKS TOKEN TXs FROM THE CURRENT BLOCK
         apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
