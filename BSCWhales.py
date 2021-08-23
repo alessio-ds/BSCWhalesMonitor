@@ -37,8 +37,14 @@ def bc():
 #s is the number to subtract to the actual block.
 s=50
 token=input('Which token would you like to scan? \nFor example, $CAKE is: 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82\n')
+burn=input("What's the burn contract address, if any? \n For example, $CAKE burn contract address is: 0x8488cb2f54ecb9aa1cdc1bc83bc1d200bb2f216b\nIf there's none, press ENTER\n")
 while len(token)!=42: # 42 is the lenght of every token address
     token=input('Wrong token. Try again: ')
+if burn=='':
+    pass
+else:
+    while len(burn)!=42: # 42 is the lenght of every burn contract address
+        token=input('Wrong burn contract address. Try again: ')
 b=bc()
 pb=str(int(b)-s)
 while True:
@@ -56,14 +62,20 @@ while True:
         print('\nBlocks to check:',str(int(cb)-int(pb)))
         print('Checking block',pb,'to',cb,'(current block)\n') #100 - 150
 
-		while cb<pb:
+        while cb<pb:
 		          cb+=1
         r=0
         # CHECKS TOKEN TXs FROM THE CURRENT BLOCK
         apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
         l=(requests.get(apiurl)).text
-
         t=l.count('hash')
+        if burn=='':
+            pass
+        else:
+            burnurl='https://api.bscscan.com/api?module=account&action=txlist&address='+burn+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
+            burnl=(requests.get(burnurl)).text
+            tb=burnl.count('hash')
+
 
         if t<16:
             print('Waiting for at least 16 transactions.')
@@ -72,6 +84,13 @@ while True:
             apiurl='https://api.bscscan.com/api?module=account&action=txlist&address='+token+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
             l=(requests.get(apiurl)).text
             t=l.count('hash')
+            if burn=='':
+                pass
+            else:
+                burnurl='https://api.bscscan.com/api?module=account&action=txlist&address='+burn+'&startblock='+pb+'&endblock='+cb+'&sort=asc&apikey='+api
+                burnl=(requests.get(burnurl)).text
+                tb=burnl.count('hash')
+
             print(f"Checking block {pb} to {cb} ({str(int(cb)-int(pb))}) - Txs to check: {t}", end="\r")
             '''
             print(f"Blocks to check: {str(int(cb)-int(pb))}", end="\r")
@@ -82,6 +101,44 @@ while True:
 
         # REPEATS ITSELF
         print('\n')
+        if burn=='':
+            pass
+        else:
+            for c in range(tb):
+                sleep(0.33) # the cap is 5 requests per second. This makes 3 requests per second at max.
+                pos=burnl.find('hash')
+                burnl=burnl[pos+4:]
+                pos=burnl.find('0')
+                h=burnl[pos:pos+66] # 66 is the lenght of every tx hash
+                url='https://bscscan.com/tx/'+h
+                r=requests.get(url)
+                testo=r.text
+                #print(testo)
+                pos=testo.find(' / Cake">')
+                pos+=9
+                testo=testo[pos:]
+                pos2=testo.find('<')
+                testo=testo[:pos2]
+
+                posdolla=(testo.find('$'))+1
+                posdolla2=(testo.find(')'))-1
+                dolla=testo[posdolla:posdolla2]
+                try:
+                    if ',' in dolla:
+                        dolla=float(dolla.replace(',',''))
+                    else:
+                        dolla=float(dolla)
+                    if dolla>=100000:
+                        hw=r.text
+                        e=''
+                        for _ in range(round(dolla/100000)):
+                            e+='🔥'
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nTOKEN BURN of CAKES '+testo
+                        with open('logs.txt', mode='a', encoding='UTF-8') as f:
+                            f.write(dstg)
+                        print(dstg)
+                except:
+                    pass
         for c in range(t):
             sleep(0.33) # the cap is 5 requests per second. This makes 3 requests per second at max.
             pos=l.find('hash')
@@ -107,12 +164,43 @@ while True:
                     dolla=float(dolla.replace(',',''))
                 else:
                     dolla=float(dolla)
-                if dolla>=10000:
-                    ds=h+'\n'+testo+'\n'
-                    with open('logs.txt', mode='a') as f:
-                        f.write(ds)
-                    print('\n',h)
-                    print(testo,'\n')
+                if dolla>=100000:
+                    hw=r.text
+                    if hw.count('Binance: Hot Wallet')==0:
+                        e=''
+                        for _ in range(round(dolla/100000)):
+                            e+='💸'
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer of CAKES '+testo
+                    elif hw.count('Binance: Hot Wallet')>3:
+                        e=''
+                        for _ in range(round(dolla/100000)):
+                            e+='🔀'
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallet Token Transfer of CAKES '+testo
+
+                    else:
+                        pos=hw.find("From</b> </span><span class='hash-tag text-truncate  mr-1'><a href='/token/")
+                        hw=hw[pos:]
+                        pos2=hw.find('Binance')
+                        pos3=hw.find('To')
+                        if pos2<pos3:
+                            # BUY
+                            e=''
+                            for _ in range(round(dolla/100000)):
+                                e+='🟢'
+                            hw=e+'\nBOUGHT '
+                        else:
+                            # SELL
+                            e=''
+                            for _ in range(round(dolla/100000)):
+                                e+='🔴'
+                            hw=e+'\nSOLD '
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+hw+'CAKES '+testo
+
+                    with open('logs.txt', mode='a', encoding='UTF-8') as f:
+                        f.write(dstg)
+                    print(dstg)
+
+
             except:
                 pass
         pb=cb #previous block
