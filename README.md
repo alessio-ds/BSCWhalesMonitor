@@ -3,9 +3,13 @@ Monitors the latest transactions on any token you want.
 
 Fully automated and tested, will (probably) never stop checking new transactions.
 
-If it's >=$100k, it prints it and saves it in a logs.txt file. Or you can simply edit the line n°109 and choose by yourself:
+If it's >=$100k, it prints it and saves it in a logs.txt file. Or you can simply edit the line n°131, 134, 167, 171, 176, 188 and 194 and choose by yourself:
 
 `if dolla>=100000:`
+
+and
+
+`for _ in range(round(dolla/100000)):`
 
 ![](https://i.imgur.com/Pt0LK0V.gif)
 
