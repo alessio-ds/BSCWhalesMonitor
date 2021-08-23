@@ -9,10 +9,12 @@ If it's >=$100k, it prints it and saves it in a logs.txt file. Or you can simply
 
 ![](https://i.imgur.com/Pt0LK0V.gif)
 
-(updated version)
+(updated version below)
 
 ![](https://i.imgur.com/M7aKmHL.gif)
 
+***This is what logs.txt looks like***
+![](https://i.imgur.com/QYn1BM5.png)
 ## How to use:
 
 ### **Python**:
