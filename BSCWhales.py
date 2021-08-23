@@ -44,7 +44,7 @@ if burn=='':
     pass
 else:
     while len(burn)!=42: # 42 is the lenght of every burn contract address
-        token=input('Wrong burn contract address. Try again: ')
+        burn=input('Wrong burn contract address. Try again: ')
 b=bc()
 pb=str(int(b)-s)
 while True:
