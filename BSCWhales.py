@@ -171,6 +171,11 @@ while True:
                         for _ in range(round(dolla/100000)):
                             e+='💸'
                         dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer of CAKES '+testo
+                    elif hw.count('Binance: Hot Wallet')==2 and hw.find('Binance: Hot Wallet 6')!=-1:
+                        e=''
+                        for _ in range(round(dolla/100000)):
+                            e+='🔀'
+                        dstg='https://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallets bought CAKES '+testo
                     elif hw.count('Binance: Hot Wallet')>3:
                         e=''
                         for _ in range(round(dolla/100000)):
