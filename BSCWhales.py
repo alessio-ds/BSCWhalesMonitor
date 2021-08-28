@@ -1,6 +1,6 @@
 import requests
 from time import sleep
-
+# AGGIUNGI IL FIND DEL NOME DEL TOKEN AI PRINT
 try:
     with open('apikey.txt', mode='r') as a:
         a=a.read()
@@ -133,7 +133,7 @@ while True:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔥'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nTOKEN BURN of CAKES '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nTOKEN BURN '+testo
                         with open('logs.txt', mode='a', encoding='UTF-8') as f:
                             f.write(dstg)
                         print(dstg)
@@ -170,17 +170,17 @@ while True:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='💸'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer of CAKES '+testo
-                    elif hw.count('Binance: Hot Wallet')==2 and hw.find('Binance: Hot Wallet 6')!=-1:
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer '+testo
+                    elif hw.count('Binance: Hot Wallet')==2 and hw.find('Binance: Hot Wallet 6')!=-1 and '0x7c51ded61930fb26eb257db7eb04e0bdff4820f5' in hw:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔀'
-                        dstg='https://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallets bought CAKES '+testo
+                        dstg='https://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallets bought '+testo
                     elif hw.count('Binance: Hot Wallet')>3:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔀'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallet Token Transfer of CAKES '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallet Token Transfer '+testo
 
                     else:
                         pos=hw.find("From</b> </span><span class='hash-tag text-truncate  mr-1'><a href='/token/")
@@ -199,7 +199,7 @@ while True:
                             for _ in range(round(dolla/100000)):
                                 e+='🔴'
                             hw=e+'\nSOLD '
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+hw+'CAKES '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+hw+' '+testo
 
                     with open('logs.txt', mode='a', encoding='UTF-8') as f:
                         f.write(dstg)
