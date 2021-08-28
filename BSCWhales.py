@@ -47,6 +47,16 @@ else:
         burn=input('Wrong burn contract address. Try again: ')
 b=bc()
 pb=str(int(b)-s)
+#pos token name
+
+tn=(requests.get('https://bscscan.com/address/'+token)).text
+ptn=tn.find('View Token Tracker Page')
+tn=tn[ptn:]
+startp=tn.find('(')
+startp+=1
+endp=tn.find(')')
+token_name=tn[startp:endp]
+print('Token found: '+token_name)
 while True:
     try:
         b=bc()
@@ -133,7 +143,7 @@ while True:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔥'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nTOKEN BURN '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nTOKEN BURN of '+token_name+' '+testo
                         with open('logs.txt', mode='a', encoding='UTF-8') as f:
                             f.write(dstg)
                         print(dstg)
@@ -164,23 +174,23 @@ while True:
                     dolla=float(dolla.replace(',',''))
                 else:
                     dolla=float(dolla)
-                if dolla>=100000:
+                if dolla>=100:
                     hw=r.text
                     if hw.count('Binance: Hot Wallet')==0:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='💸'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nToken Transfer of '+token_name+' '+testo
                     elif hw.count('Binance: Hot Wallet')==2 and hw.find('Binance: Hot Wallet 6')!=-1 and '0x7c51ded61930fb26eb257db7eb04e0bdff4820f5' in hw:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔀'
-                        dstg='https://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallets bought '+testo
+                        dstg='https://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallets bought '+token_name+' '+testo
                     elif hw.count('Binance: Hot Wallet')>3:
                         e=''
                         for _ in range(round(dolla/100000)):
                             e+='🔀'
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallet Token Transfer '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+e+'\nBinance Hot Wallet Token Transfer of '+token_name+' '+testo
 
                     else:
                         pos=hw.find("From</b> </span><span class='hash-tag text-truncate  mr-1'><a href='/token/")
@@ -199,7 +209,7 @@ while True:
                             for _ in range(round(dolla/100000)):
                                 e+='🔴'
                             hw=e+'\nSOLD '
-                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+hw+' '+testo
+                        dstg='\n\nhttps://bscscan.com/tx/'+h+'\n'+hw+' '+token_name+' '+testo
 
                     with open('logs.txt', mode='a', encoding='UTF-8') as f:
                         f.write(dstg)
