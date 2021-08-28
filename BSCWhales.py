@@ -1,6 +1,6 @@
 import requests
 from time import sleep
-# AGGIUNGI IL FIND DEL NOME DEL TOKEN AI PRINT
+
 try:
     with open('apikey.txt', mode='r') as a:
         a=a.read()
