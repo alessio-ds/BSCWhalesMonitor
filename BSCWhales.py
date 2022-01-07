@@ -185,10 +185,10 @@ while True:
                         dolla = float(dolla.replace(",", ""))
                     else:
                         dolla = float(dolla)
-                    if dolla >= 100000:
+                    if dolla >= 500:
                         hw = r.text
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔥"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -236,7 +236,7 @@ while True:
                     hw = r.text
                     if hw.count("Binance: Hot Wallet") == 0:
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "💸"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -254,7 +254,7 @@ while True:
                         and "0x7c51ded61930fb26eb257db7eb04e0bdff4820f5" in hw
                     ):
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔀"
                         dstg = (
                             "https://bscscan.com/tx/"
@@ -268,7 +268,7 @@ while True:
                         )
                     elif hw.count("Binance: Hot Wallet") > 3:
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔀"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -291,13 +291,13 @@ while True:
                         if pos2 < pos3:
                             # BUY
                             e = ""
-                            for _ in range(round(dolla / 100000)):
+                            for _ in range(round(dolla / 500)):
                                 e += "🟢"
                             hw = e + "\nBOUGHT "
                         else:
                             # SELL
                             e = ""
-                            for _ in range(round(dolla / 100000)):
+                            for _ in range(round(dolla / 500)):
                                 e += "🔴"
                             hw = e + "\nSOLD "
                         dstg = (
