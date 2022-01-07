@@ -1,6 +1,8 @@
 import requests
 import time
 
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
 # AGGIUNGI IL FIND DEL NOME DEL TOKEN AI PRINT
 try:
     with open("apikey.txt", mode="r") as a:
@@ -20,7 +22,7 @@ def bc(api):
     # CURRENT BLOCK CHECK
     ts=str(int(time.time()))
     blockurl = "https://api.bscscan.com/api?module=block&action=getblocknobytime&timestamp="+ts+"&closest=before&apikey="+api
-    b = requests.get(blockurl)
+    b = requests.get(blockurl, headers=headers)
     b = b.text
     ppb = b.find("result")
     ppb += 9
@@ -54,7 +56,7 @@ b = bc(api)
 pb = str(int(b) - s)
 # pos token name
 
-tn = (requests.get("https://bscscan.com/address/" + token)).text
+tn = (requests.get("https://bscscan.com/address/" + token, headers=headers)).text
 ptn = tn.find("View Token Tracker Page")
 tn = tn[ptn:]
 startp = tn.find("(")
@@ -166,7 +168,7 @@ while True:
                 pos = burnl.find("0")
                 h = burnl[pos : pos + 66]  # 66 is the lenght of every tx hash
                 url = "https://bscscan.com/tx/" + h
-                r = requests.get(url)
+                r = requests.get(url, headers=headers)
                 testo = r.text
                 # print(testo)
                 pos = testo.find(' / Cake">')
@@ -212,7 +214,7 @@ while True:
             pos = l.find("0")
             h = l[pos : pos + 66]  # 66 is the lenght of every tx hash
             url = "https://bscscan.com/tx/" + h
-            r = requests.get(url)
+            r = requests.get(url, headers=headers)
             testo = r.text
             # print(testo)
             pos = testo.find(' / Cake">')
