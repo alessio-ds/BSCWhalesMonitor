@@ -42,6 +42,7 @@ s = 50
 token = input(
     "Which token would you like to scan? \nFor example, $CAKE is: 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82\n"
 )
+#token = "0xCa3F508B8e4Dd382eE878A314789373D80A5190A"
 burn = input(
     "What's the burn contract address, if any? \n For example, $CAKE burn contract address is: 0x8488cb2f54ecb9aa1cdc1bc83bc1d200bb2f216b\nIf there's none, press ENTER\n"
 )
@@ -171,7 +172,7 @@ while True:
                 r = requests.get(url, headers=headers)
                 testo = r.text
                 # print(testo)
-                pos = testo.find(' / Cake">')
+                pos = testo.find(f' / {token_name}">')
                 pos += 9
                 testo = testo[pos:]
                 pos2 = testo.find("<")
@@ -217,7 +218,7 @@ while True:
             r = requests.get(url, headers=headers)
             testo = r.text
             # print(testo)
-            pos = testo.find(' / Cake">')
+            pos = testo.find(f' / {token_name}">')
             pos += 9
             testo = testo[pos:]
             pos2 = testo.find("<")
