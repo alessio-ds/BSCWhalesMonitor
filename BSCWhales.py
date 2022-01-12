@@ -1,6 +1,8 @@
 import requests
 import time
 
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
 # AGGIUNGI IL FIND DEL NOME DEL TOKEN AI PRINT
 try:
     with open("apikey.txt", mode="r") as a:
@@ -20,7 +22,7 @@ def bc(api):
     # CURRENT BLOCK CHECK
     ts=str(int(time.time()))
     blockurl = "https://api.bscscan.com/api?module=block&action=getblocknobytime&timestamp="+ts+"&closest=before&apikey="+api
-    b = requests.get(blockurl)
+    b = requests.get(blockurl, headers=headers)
     b = b.text
     ppb = b.find("result")
     ppb += 9
@@ -40,6 +42,7 @@ s = 50
 token = input(
     "Which token would you like to scan? \nFor example, $CAKE is: 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82\n"
 )
+#token = "0xCa3F508B8e4Dd382eE878A314789373D80A5190A"
 burn = input(
     "What's the burn contract address, if any? \n For example, $CAKE burn contract address is: 0x8488cb2f54ecb9aa1cdc1bc83bc1d200bb2f216b\nIf there's none, press ENTER\n"
 )
@@ -54,7 +57,7 @@ b = bc(api)
 pb = str(int(b) - s)
 # pos token name
 
-tn = (requests.get("https://bscscan.com/address/" + token)).text
+tn = (requests.get("https://bscscan.com/address/" + token, headers=headers)).text
 ptn = tn.find("View Token Tracker Page")
 tn = tn[ptn:]
 startp = tn.find("(")
@@ -166,10 +169,10 @@ while True:
                 pos = burnl.find("0")
                 h = burnl[pos : pos + 66]  # 66 is the lenght of every tx hash
                 url = "https://bscscan.com/tx/" + h
-                r = requests.get(url)
+                r = requests.get(url, headers=headers)
                 testo = r.text
                 # print(testo)
-                pos = testo.find(' / Cake">')
+                pos = testo.find(f' / {token_name}">')
                 pos += 9
                 testo = testo[pos:]
                 pos2 = testo.find("<")
@@ -183,10 +186,10 @@ while True:
                         dolla = float(dolla.replace(",", ""))
                     else:
                         dolla = float(dolla)
-                    if dolla >= 100000:
+                    if dolla >= 500:
                         hw = r.text
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔥"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -212,10 +215,10 @@ while True:
             pos = l.find("0")
             h = l[pos : pos + 66]  # 66 is the lenght of every tx hash
             url = "https://bscscan.com/tx/" + h
-            r = requests.get(url)
+            r = requests.get(url, headers=headers)
             testo = r.text
             # print(testo)
-            pos = testo.find(' / Cake">')
+            pos = testo.find(f' / {token_name}">')
             pos += 9
             testo = testo[pos:]
             pos2 = testo.find("<")
@@ -234,7 +237,7 @@ while True:
                     hw = r.text
                     if hw.count("Binance: Hot Wallet") == 0:
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "💸"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -252,7 +255,7 @@ while True:
                         and "0x7c51ded61930fb26eb257db7eb04e0bdff4820f5" in hw
                     ):
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔀"
                         dstg = (
                             "https://bscscan.com/tx/"
@@ -266,7 +269,7 @@ while True:
                         )
                     elif hw.count("Binance: Hot Wallet") > 3:
                         e = ""
-                        for _ in range(round(dolla / 100000)):
+                        for _ in range(round(dolla / 500)):
                             e += "🔀"
                         dstg = (
                             "\n\nhttps://bscscan.com/tx/"
@@ -289,13 +292,13 @@ while True:
                         if pos2 < pos3:
                             # BUY
                             e = ""
-                            for _ in range(round(dolla / 100000)):
+                            for _ in range(round(dolla / 500)):
                                 e += "🟢"
                             hw = e + "\nBOUGHT "
                         else:
                             # SELL
                             e = ""
-                            for _ in range(round(dolla / 100000)):
+                            for _ in range(round(dolla / 500)):
                                 e += "🔴"
                             hw = e + "\nSOLD "
                         dstg = (
