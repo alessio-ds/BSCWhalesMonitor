@@ -281,6 +281,20 @@ while True:
                             + " "
                             + testo
                         )
+                    elif "PancakeSwap" in hw or "ApeSwap" in hw:
+                        e = ""
+                        for _ in range(round(dolla / 500)):
+                            e += "🔄"
+                        dstg = (
+                            "\n\nhttps://bscscan.com/tx/"
+                            + h
+                            + "\n"
+                            + e
+                            + "\nDEX Swap "
+                            + token_name
+                            + " "
+                            + testo
+                        )
 
                     else:
                         pos = hw.find(
